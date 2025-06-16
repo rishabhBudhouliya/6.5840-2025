@@ -27,9 +27,6 @@ func MakeLock(ck kvtest.IKVClerk, l string) *Lock {
 	lk := &Lock{ck: ck}
 	lk.id = kvtest.RandValue(8)
 	lk.key = l
-	// randKey := l + kvtest.RandValue(8)
-	// lk.ck.Put(randKey, "ready", rpc.Tversion(0))
-	// lk.key = randKey
 	return lk
 }
 
