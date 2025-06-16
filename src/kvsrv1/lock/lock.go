@@ -15,7 +15,6 @@ type Lock struct {
 	ck  kvtest.IKVClerk
 	id  string
 	key string
-	// You may add code here
 }
 
 // The tester calls MakeLock() and passes in a k/v clerk; your code can
@@ -74,32 +73,3 @@ func (lk *Lock) Release() {
 		fmt.Print("lock can't be released")
 	}
 }
-
-/*
-for {
-		value, version, err := lk.ck.Get(lk.key)
-		if err == rpc.ErrNoKey {
-			lk.ck.Put(lk.key, strconv.Itoa(0), rpc.Tversion(0))
-			return
-		}
-		v, _ := strconv.Atoi(value)
-		if v != int(version) {
-			continue
-		} else {
-			resErr2 := lk.ck.Put(lk.key, value, version)
-			if resErr2 != nil {
-
-			}
-			return
-		}
-	}
-*/
-
-/*
-lk.mu.Lock()
-	defer lk.mu.Unlock()
-	_, version, err := lk.ck.Get(lk.key)
-	if err == rpc.OK {
-		lk.ck.Put(lk.key, strconv.Itoa(int(version)+1), version)
-	}
-*/
