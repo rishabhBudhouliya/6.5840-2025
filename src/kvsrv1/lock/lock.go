@@ -42,7 +42,7 @@ func (lk *Lock) Acquire() {
 		// lock free to be acquired
 		if getErr == rpc.OK && value == "" {
 			putErr := lk.ck.Put(lk.key, lk.id, version)
-			if putErr == rpc.ErrVersion {
+			if putErr == rpc.ErrVersion || putErr == rpc.ErrMaybe {
 				continue
 			} else {
 				break
@@ -53,7 +53,7 @@ func (lk *Lock) Acquire() {
 		}
 		if getErr == rpc.ErrNoKey || value == lk.id {
 			putErr := lk.ck.Put(lk.key, lk.id, version)
-			if putErr == rpc.ErrVersion {
+			if putErr == rpc.ErrVersion || putErr == rpc.ErrMaybe {
 				continue
 			} else {
 				break
@@ -65,7 +65,8 @@ func (lk *Lock) Acquire() {
 func (lk *Lock) Release() {
 	_, version, getErr := lk.ck.Get(lk.key)
 	if getErr == rpc.OK {
-		lk.ck.Put(lk.key, "", version)
+		err := lk.ck.Put(lk.key, "", version)
+		fmt.Println(err)
 	} else {
 		fmt.Print("lock can't be released")
 	}
